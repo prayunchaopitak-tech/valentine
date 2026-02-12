@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Q&A</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f9f9f9; }
+        #hearts { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+        .heart { position: absolute; width: 20px; height: 20px; background: red; transform: rotate(45deg); animation: fall 5s linear infinite; }
+        @keyframes fall { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(100vh); } }
+        .confetti { position: absolute; background-color: gold; width: 10px; height: 10px; animation: confettiFall 3s linear infinite; }
+        @keyframes confettiFall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
+    </style>
+</head>
+<body>
+    <h1>Happy Valentine's Day!</h1>
+    <h2>Ask me anything!</h2>
+    <input type="text" id="question" placeholder="What’s your question?">
+    <button id="askButton">Ask</button>
+    <p id="answer"></p>
+    <button id="noButton" style="position:relative">No</button>
+    <div id="hearts"></div>
+    <script>
+        const questionsAndAnswers = {
+            'Do you love me?': 'Of course! Happy Valentine’s Day! 💖',
+            'Will you be mine?': 'Always and forever!',
+            // Add more questions and answers
+        };
+
+        document.getElementById('askButton').addEventListener('click', function() {
+            const question = document.getElementById('question').value;
+            const answer = questionsAndAnswers[question] || 'I do not have an answer for that.';
+            document.getElementById('answer').innerText = answer;
+        });
+
+        const noButton = document.getElementById('noButton');
+        noButton.addEventListener('mouseenter', function() {
+            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        function createFallingHearts() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.getElementById('hearts').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        setInterval(createFallingHearts, 300);
+
+        function createConfetti() {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.classList.add('confetti');
+            confettiPiece.style.left = Math.random() * 100 + 'vw';
+            confettiPiece.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(confettiPiece);
+            setTimeout(() => confettiPiece.remove(), 3000);
+        }
+
+        setInterval(createConfetti, 100);
+    </script>
+</body>
+</html>
