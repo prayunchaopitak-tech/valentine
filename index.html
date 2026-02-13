@@ -3,159 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <title>Will You Be My Valentine?</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffb3d9 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #ffeef2;
-            font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
-
+        
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             text-align: center;
-            width: 320px;
+            max-width: 500px;
             position: relative;
             z-index: 10;
+            animation: slideIn 0.5s ease;
         }
-
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .img-box {
-            width: 100%;
-            height: 200px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 20px;
+            margin: 20px 0;
+            position: relative;
         }
-
+        
         .img-box img {
             width: 100%;
-            height: 100%;
+            height: 300px;
             object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
+        
         h1 {
-            font-size: 22px;
-            color: #444;
-            margin-bottom: 30px;
+            color: #e74c3c;
+            margin: 20px 0;
+            font-size: 28px;
         }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            height: 50px;
-            align-items: center;
-        }
-
-        button {
-            padding: 10px 25px;
+        
+        p {
+            color: #666;
             font-size: 16px;
-            font-weight: bold;
-            border-radius: 50px;
+            margin: 15px 0;
+        }
+        
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
             border: none;
+            border-radius: 25px;
             cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
-
+        
         #yesBtn {
-            background-color: #ff4d6d;
+            background: #e74c3c;
             color: white;
-            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            padding: 15px 50px;
+            font-size: 18px;
         }
-
+        
+        #yesBtn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        
         #noBtn {
-            background-color: #f1f1f1;
-            color: #888;
-            transition: left 0.5s ease-out, top 0.5s ease-out, transform 0.2s;
-        }
-
-        .bg-heart {
+            background: #95a5a6;
+            color: white;
             position: absolute;
-            color: #ffb3c1;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: -1;
-            animation: floatUp 5s linear infinite;
         }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        
+        #noBtn:hover {
+            background: #7f8c8d;
+        }
+        
+        .heart-fall {
+            position: fixed;
+            pointer-events: none;
+            font-size: 40px;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            animation: confettiFall 3s linear forwards;
+            z-index: 1;
+        }
+        
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="card">
         <div class="img-box">
-            <img src="https://inline-files.aiusercontent.com/600000/601662/123.jpg" alt="Puss in Boots Valentine">
+            <img id="mainImg" src="https://inline-files.aiusercontent.com/600000/601662/123.jpg" alt="Valentine Image">
         </div>
+        <h1 id="mainTitle">Will you be my Valentine? 💖</h1>
+        <p id="mainText">คุณจะเป็นแฟนของผมได้ไหม?</p>
         
-        <h1>Will you be my Valentine? 💖</h1>
-
-        <div class="btn-group">
-            <button id="yesBtn">Yes 💗</button>
-            <button id="noBtn">No 🥺</button>
+        <div class="buttons">
+            <button id="yesBtn">YES ❤️</button>
+            <button id="noBtn">NO 😢</button>
         </div>
     </div>
 
     <script>
-        const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-
-        function escape() {
-            const maxX = window.innerWidth - noBtn.offsetWidth;
-            const maxY = window.innerHeight - noBtn.offsetHeight;
-            
-            const randomX = Math.max(0, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(0, Math.floor(Math.random() * maxY));
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-            noBtn.style.zIndex = '999';
-        }
-
-        noBtn.addEventListener('mouseover', () => {
-            setTimeout(escape, 50); 
-        });
-
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            escape();
-        });
-
-        yesBtn.addEventListener('click', () => {
-            // ภาพที่ 2: เปลี่ยนเป็นภาพช่อดอกไม้กุหลาบหลังจากกด Yes ครับ
-            document.querySelector('.card').innerHTML = `
+        const noBtn = document.getElementById('noBtn');
+        const card = document.querySelector('.card');
+        
+        // ภาพช่อดอกไม้สำหรับหลังกด Yes
+        const flowerImageUrl = 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500&h=500&fit=crop';
+        
+        yesBtn.addEventListener('click', function() {
+            // เปลี่ยนเนื้อหา
+            card.innerHTML = `
                 <div class="img-box">
-                    <img src="http://googleusercontent.com/image_collection/image_retrieval/8216649288030885525_0" alt="Rose Bouquet">
+                    <img src="${flowerImageUrl}" alt="Rose Bouquet">
                 </div>
                 <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
                 <p style="color: #666;">Thank you for be my Valentine naa 😘</p>
             `;
-            noBtn.style.display = 'none';
+            
+            // สร้าง confetti
+            for (let i = 0; i < 50; i++) {
+                createConfetti();
+            }
+            
+            // สร้าง falling hearts
+            for (let i = 0; i < 30; i++) {
+                createHeartFall();
+            }
         });
-
-        function createHearts() {
+        
+        noBtn.addEventListener('mouseenter', function() {
+            const randomX = Math.random() * (window.innerWidth - 100);
+            const randomY = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.zIndex = '9';
+        });
+        
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-10px';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.background = ['#e74c3c', '#f39c12', '#2ecc71', '#3498db', '#9b59b6'][Math.floor(Math.random() * 5)];
+            confetti.style.borderRadius = '50%';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 3000);
+        }
+        
+        function createHeartFall() {
             const heart = document.createElement('div');
-            heart.className = 'bg-heart';
+            heart.classList.add('heart-fall');
             heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '-30px';
             heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
             document.body.appendChild(heart);
+            
             setTimeout(() => heart.remove(), 5000);
         }
-        setInterval(createHearts, 400);
+        
+        // สร้าง falling hearts อยู่เรื่อยๆ
+        setInterval(() => {
+            createHeartFall();
+        }, 500);
     </script>
 </body>
 </html>
