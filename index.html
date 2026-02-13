@@ -96,7 +96,7 @@
 
     <div class="card">
         <div class="img-box">
-            <img src="myloveflower.jpg" alt="Valentine Image">
+            <img src="https://inline-files.aiusercontent.com/600000/601662/123.jpg" alt="Puss in Boots Valentine">
         </div>
         
         <h1>Will you be my Valentine? 💖</h1>
@@ -134,22 +134,16 @@
         });
 
         yesBtn.addEventListener('click', () => {
+            // ภาพที่ 2: เปลี่ยนเป็นภาพช่อดอกไม้กุหลาบหลังจากกด Yes ครับ
             document.querySelector('.card').innerHTML = `
-             yesBtn.addEventListener('click', () => {
-    document.querySelector('.card').innerHTML = `
-yesBtn.addEventListener('click', () => {
-    // ใช้ backtick ( ` ) ในการครอบ HTML หลายบรรทัดเพื่อให้ทำงานถูกต้อง
-    document.querySelector('.card').innerHTML = `
-        <div class="img-box">
-            <img src="http://googleusercontent.com/image_collection/image_retrieval/8216649288030885525_0" alt="Flowers">
-        </div>
-        <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
-        <p style="color: #666;">Thank you for be my Valentine naa 😘 </p>
-    `;
-    
-    // ซ่อนปุ่ม No หลังจากกด Yes
-    noBtn.style.display = 'none';
-});
+                <div class="img-box">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/8216649288030885525_0" alt="Rose Bouquet">
+                </div>
+                <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
+                <p style="color: #666;">Thank you for be my Valentine naa 😘</p>
+            `;
+            noBtn.style.display = 'none';
+        });
 
         function createHearts() {
             const heart = document.createElement('div');
