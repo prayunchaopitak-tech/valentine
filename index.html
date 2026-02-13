@@ -135,14 +135,16 @@
 
         yesBtn.addEventListener('click', () => {
             document.querySelector('.card').innerHTML = `
-                <div class="img-box">
-                    <img src="myloveflower.jpg">
-                </div>
-                <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
-                <p style="color: #666;">Thank you for be my Valentine naa 😘 v</p>
-            `;
-            noBtn.style.display = 'none';
-        });
+             yesBtn.addEventListener('click', () => {
+    document.querySelector('.card').innerHTML = `
+        <div class="img-box">
+            <img src="http://googleusercontent.com/image_collection/image_retrieval/8216649288030885525_0">
+        </div>
+        <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
+        <p style="color: #666;">Thank you for be my Valentine naa 😘 </p>
+    `;
+    noBtn.style.display = 'none';
+});;
 
         function createHearts() {
             const heart = document.createElement('div');
