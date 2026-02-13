@@ -1,67 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day Q&A</title>
+    <title>Be My Valentine?</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background: #f9f9f9; }
-        #hearts { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
-        .heart { position: absolute; width: 20px; height: 20px; background: red; transform: rotate(45deg); animation: fall 5s linear infinite; }
-        @keyframes fall { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(100vh); } }
-        .confetti { position: absolute; background-color: gold; width: 10px; height: 10px; animation: confettiFall 3s linear infinite; }
-        @keyframes confettiFall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffeef2;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+            width: 320px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .img-box {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            height: 50px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        }
+
+        #noBtn {
+            background-color: #f1f1f1;
+            color: #888;
+            transition: left 0.5s ease-out, top 0.5s ease-out, transform 0.2s;
+        }
+
+        .bg-heart {
+            position: absolute;
+            color: #ffb3c1;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: -1;
+            animation: floatUp 5s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <h1>Happy Valentine's Day!</h1>
-    <h2>Ask me anything!</h2>
-    <input type="text" id="question" placeholder="What’s your question?">
-    <button id="askButton">Ask</button>
-    <p id="answer"></p>
-    <button id="noButton" style="position:relative">No</button>
-    <div id="hearts"></div>
+
+    <div class="card">
+        <div class="img-box">
+            <img src="https://inline-files.aiusercontent.com/600000/601662/image_5cf3a0.jpg" alt="Valentine Image">
+        </div>
+        
+        <h1>Will you be my Valentine? 💖</h1>
+
+        <div class="btn-group">
+            <button id="yesBtn">Yes 💗</button>
+            <button id="noBtn">No 🥺</button>
+        </div>
+    </div>
+
     <script>
-        const questionsAndAnswers = {
-            'Do you love me?': 'Of course! Happy Valentine’s Day! 💖',
-            'Will you be mine?': 'Always and forever!',
-            // Add more questions and answers
-        };
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
 
-        document.getElementById('askButton').addEventListener('click', function() {
-            const question = document.getElementById('question').value;
-            const answer = questionsAndAnswers[question] || 'I do not have an answer for that.';
-            document.getElementById('answer').innerText = answer;
+        function escape() {
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            
+            const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.zIndex = '999';
+        }
+
+        noBtn.addEventListener('mouseover', () => {
+            setTimeout(escape, 50); 
         });
 
-        const noButton = document.getElementById('noButton');
-        noButton.addEventListener('mouseenter', function() {
-            const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
-            noButton.style.transform = `translate(${x}px, ${y}px)`;
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            escape();
         });
 
-        function createFallingHearts() {
+        yesBtn.addEventListener('click', () => {
+            document.querySelector('.card').innerHTML = `
+                <div class="img-box">
+                    <img src="https://inline-files.aiusercontent.com/600000/601662/image_5cf3a0.jpg">
+                </div>
+                <h1 style="color: #ff4d6d;">Yayyy, i know u will say "Yes" 🥰</h1>
+                <p style="color: #666;">Thank you for be my Valentine naa 😘 v</p>
+            `;
+            noBtn.style.display = 'none';
+        });
+
+        function createHearts() {
             const heart = document.createElement('div');
-            heart.classList.add('heart');
+            heart.className = 'bg-heart';
+            heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.getElementById('hearts').appendChild(heart);
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 5000);
         }
-
-        setInterval(createFallingHearts, 300);
-
-        function createConfetti() {
-            const confettiPiece = document.createElement('div');
-            confettiPiece.classList.add('confetti');
-            confettiPiece.style.left = Math.random() * 100 + 'vw';
-            confettiPiece.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(confettiPiece);
-            setTimeout(() => confettiPiece.remove(), 3000);
-        }
-
-        setInterval(createConfetti, 100);
+        setInterval(createHearts, 400);
     </script>
 </body>
 </html>
